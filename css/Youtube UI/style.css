@@ -1,0 +1,202 @@
+body {
+  margin:0;
+}
+header {
+  display:flex;
+  background-color:#000000;
+  padding:8px;
+  justify-content:space-between;
+}
+
+header .youtube {
+  color:white;
+}
+
+header .logo i {
+  color:#ff0000;
+}
+
+header .menu {
+  margin-left: 8px;
+  margin-right: 8px;
+  color:white;
+}
+
+header .menu .fa-search, .more i {
+  margin-right: 16px;
+}
+/*---------------------------------*/
+.info {
+  margin-left: 8px;
+  padding: 0;
+}
+
+.hashtag {
+  display:flex;
+  list-style: none;
+  color:blue;
+  margin-bottom:8px;
+  margin-top: 8px;
+  padding: 0;
+}
+
+.info .hashtag li {
+  margin-right: 10px;
+}
+
+.more {
+  display:flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.view {
+  margin-top: 4px;
+  font-size: 0.8em;
+  color:gray;
+}
+/*----------------------------------*/
+.func {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 40px;
+  margin-left:40px;
+  padding: 0;
+}
+
+.func button {
+background-color: rgba(255,255,255,0.5);
+border: none;
+display: flex;
+flex-direction: column;
+}
+
+.func button i {
+  margin: 8px auto;
+  color:gray;
+}
+
+.func .fa-thumbs-up {
+  color:#0066ff;
+}
+/*-----------------------*/
+.channel {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.bord {
+  display: flex;
+  margin-top: 8px;
+  margin-bottom:8px;
+}
+
+.profile {
+  border-radius: 70%;
+  width:55px;
+  height:55px;
+  margin-left: 10px;
+}
+
+.chainfo{
+  display: flex;
+  flex-direction: column;
+  margin:auto;
+  margin-left: 10px;
+  width:100%;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.subscribers {
+  font-size: 0.8em;
+}
+
+.subs {
+  display: flex;
+  flex-direction: column;
+  margin:auto;
+  margin-right: 10px;
+  color: red;
+  font-weight: bolder;
+}
+/*------------------------*/
+.next {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.upnext {
+  margin-left: 8px;
+  color:gray;
+  margin-bottom: 8px;
+}
+
+.next .nextVideo {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.nextVideo .img {
+  flex:1 1 35%;
+}
+
+.nextVideo .img img {
+  width:100%;
+}
+
+.txt {
+  display: flex;
+  flex-direction: column;
+  margin:auto;
+  margin-top: 0;
+  margin-left: 10px;
+  flex: 1 1 60%;
+}
+
+.nextVideo i {
+  margin-right: 10px;
+  float: right;
+  flex: 1 1 5%;
+}
+
+.nexttitle {
+  font-weight: bold;
+}
+
+.chan, .views {
+  font-size: 0.8em;
+  color:gray;
+}
+
+.infoAndnext {
+  display: flex;
+  flex-direction: column;
+}
+
+/*화면 크기가 700픽셀보다 클 때*/
+@media screen and (min-width:700px) {
+  .infoAndnext {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .bord {
+    width:400px;
+  }
+
+  .next .upnext {
+    margin-left: 10px;
+  }
+
+}
