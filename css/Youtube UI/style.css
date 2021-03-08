@@ -88,14 +88,14 @@ flex-direction: column;
 .channel {
   margin-top: 8px;
   margin-bottom: 8px;
-  border-top: 1px solid gray;
-  border-bottom: 1px solid gray;
 }
 
 .bord {
   display: flex;
-  margin-top: 8px;
-  margin-bottom:8px;
+  padding-top: 8px;
+  padding-bottom:8px;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
 }
 
 .profile {
