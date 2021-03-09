@@ -10,9 +10,15 @@
                 }
 
             function draw() {
-                background(220);
+                if(mouseIsPressed) { //마우스를 꾹 누르고 있을 때 계속 바뀐다.
+                    background(random(250), random(255), random(255));
+                }
                 x=x+1;
                 circle(mouseX+random(-10, 10), mouseY, random(100));
+            }
+
+            function mousePressed() { //마우스를 누르면 한번만 바뀐다.
+                
             }
         </script>
     </body>
