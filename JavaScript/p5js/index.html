@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.2.0/lib/p5.min.js"></script>
+    </head>
+    <body>
+        <script>
+            function setup() {
+                createCanvas(400, 800);
+                background('gray');
+                stroke('blue');
+                strokeWeight(10);
+                fill('red'); //도형 정의 전 선언하면 바꾸기 전까지는 모든 도형에 적용
+                circle(100, 200, 100);
+
+                noFill();
+                rect(200, 200, 50);
+            }
+        </script>
+    </body>
+</html>
