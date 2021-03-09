@@ -5,15 +5,14 @@
     <body>
         <script>
             function setup() {
-                createCanvas(400, 800);
-                background('gray');
-                stroke('blue');
-                strokeWeight(10);
-                fill('red'); //도형 정의 전 선언하면 바꾸기 전까지는 모든 도형에 적용
-                circle(100, 200, 100);
+                createCanvas(windowWidth, windowHeight);
+                x=0;
+                }
 
-                noFill();
-                rect(200, 200, 50);
+            function draw() {
+                background(220);
+                x=x+1;
+                circle(x, 200, 100);
             }
         </script>
     </body>
