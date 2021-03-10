@@ -28,6 +28,7 @@
 }
 
 .fname {
+    padding:0;
     border: none;
     border-bottom: 1px solid black;
     margin-left: 10px;

@@ -64,7 +64,9 @@ function draw(){
         var fname=document.createElement('input');
         fname.type="text";
         fname.className="fname";
-        fname.id=fruit[i];
+        fname.name=fruit[i];
+        fname.value=fruit[i];
+        //fname.style.visibility="hidden";
         fname.readOnly=true;
 
         var foo=document.querySelector(".solve");
