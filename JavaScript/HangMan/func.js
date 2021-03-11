@@ -5,7 +5,6 @@ var body=false;
 var rightArm=false;
 var leftLeg=false;
 var rightLeg=false;
-var fruit;
 
 var arr=new Array('apple', 'avocado', 'banana', 'blueberry', 'cherry', 
         'coconut', 'cranberry', 'durian', 'grapefruit', 'grapes',
@@ -40,16 +39,25 @@ function draw(){
  }
 
  function create() { //알파벳 버튼 생성
-    var asciiNum=65;
-    var ch;
+    var asciiNum=97;
     for(var i=1; i<=26; i++) {
+        var ch;
         ch=String.fromCharCode(asciiNum);
         var button = document.createElement('input');
         button.type="button";
         button.value=ch;
+        button.name=ch;
         button.className="alphabetButton";
-        button.onclick=function() { //알파벳 버튼 클릭 이벤트
-            summitAlphabet(ch);
+        button.onclick=function () { 
+            var x=prop.fruit;
+            var answer;
+            for(var i=0; i<x.length; i++) {
+                if(x[i]==this.name[0]) {
+                    answer=document.getElementById(String(i));
+                    answer.value=this.name[0];
+                
+                }
+            }
         }
         var foo=document.querySelector(".alphabet");
         foo.appendChild(button);
@@ -59,13 +67,14 @@ function draw(){
  }
 
  function makeRandomfruit() { //배열 중 랜덤 하나 선택 후 칸 생성
-    fruit=randomItem(arr);
-    for(var i=0; i<fruit.length; i++) {
+    prop.fruit=randomItem(arr);
+    var x=prop.fruit;
+    for(var i=0; i<x.length; i++) {
         var fname=document.createElement('input');
         fname.type="text";
         fname.className="fname";
-        fname.name=fruit[i];
-        fname.value=fruit[i];
+        fname.id=String(i);
+        //fname.value=x[i];
         //fname.style.visibility="hidden";
         fname.readOnly=true;
 
@@ -79,10 +88,23 @@ function randomItem(a) {
     return a[Math.floor(Math.random() * a.length)];
 }
 
-function summitAlphabet(ch) {
-    for(var i=0; i<fruit.length; i++) {
-        if(fruit[i]===ch) {
-            
+function summitAlphabet(c) {
+    var x=prop.fruit;
+    for(var i=0; i<x.length; i++) {
+        if(x[i]==c) {
+            //x=document.getElementsByName(String(i));
+            //x[0].value=fruit[i];
+            alert('hi');
         }
+    }
+}
+
+var fruit="";
+var prop = {
+    get fruit() {
+        return fruit;
+    },
+    set fruit(x) {
+        fruit = x;
     }
 }
