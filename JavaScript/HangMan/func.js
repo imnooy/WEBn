@@ -1,10 +1,5 @@
 var started = false;
-var circle=false;
-var leftArm=false;
-var body=false;
-var rightArm=false;
-var leftLeg=false;
-var rightLeg=false;
+var count=0;
 
 var arr=new Array('apple', 'avocado', 'banana', 'blueberry', 'cherry', 
         'coconut', 'cranberry', 'durian', 'grapefruit', 'grapes',
@@ -25,7 +20,40 @@ function draw(){
         line(10, 400, 130, 400);  //맨 밑줄
         line(170, 100, 170, 120);
     }
+    if(count>=1) {
+        circle(170, 145, 50); //머리
+    }
+
+    if(count>=2) {
+        line(170, 170, 170, 280); //몸통
+    }
+
+    if(count>=3) {
+        line(170, 170, 120, 200); //왼팔
+    }
+
+    if(count>=4) {
+        line(170, 170, 220, 200); //오른팔
+    }
+
+    if(count>=5) {
+        line(170, 280, 140, 340); //왼다리
+    }
+
+    if(count>=6) {
+        line(170, 280, 200, 340); //오른다리
+    }
  }
+
+var fruit="";
+var prop = {
+    get fruit() {
+        return fruit;
+    },
+    set fruit(x) {
+        fruit = x;
+    }
+}
  
  function start(){ //시작버튼 클릭함수
     started = true;
@@ -48,16 +76,21 @@ function draw(){
         button.value=ch;
         button.name=ch;
         button.className="alphabetButton";
-        button.onclick=function () { 
+        button.onclick=function () { //클릭 이벤트
             var x=prop.fruit;
             var answer;
+            var istrue=false;
             for(var i=0; i<x.length; i++) {
                 if(x[i]==this.name[0]) {
                     answer=document.getElementById(String(i));
                     answer.value=this.name[0];
-                
+                    istrue=true;               
                 }
             }
+            if(istrue==false) {
+                count++;
+            }
+            isWrong();
         }
         var foo=document.querySelector(".alphabet");
         foo.appendChild(button);
@@ -88,23 +121,17 @@ function randomItem(a) {
     return a[Math.floor(Math.random() * a.length)];
 }
 
-function summitAlphabet(c) {
-    var x=prop.fruit;
-    for(var i=0; i<x.length; i++) {
-        if(x[i]==c) {
-            //x=document.getElementsByName(String(i));
-            //x[0].value=fruit[i];
-            alert('hi');
+function isWrong() { //끝났을 때
+    if(count>=6) {
+        alert('GAME OVER!!! Answer is '+prop.fruit);
+        var ans=document.getElementsByClassName('fname');
+        for(var i=0; i<ans.length; i++) { //정답 공개
+            ans[i].value=prop.fruit[i];
         }
-    }
-}
 
-var fruit="";
-var prop = {
-    get fruit() {
-        return fruit;
-    },
-    set fruit(x) {
-        fruit = x;
+        var btn=document.getElementsByClassName('alphabetButton');
+        for(var i=0; i<btn.length; i++) {
+            btn[i].disabled='disabled';
+        }
     }
 }
