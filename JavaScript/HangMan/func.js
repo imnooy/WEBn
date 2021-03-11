@@ -91,6 +91,7 @@ var prop = {
                 count++;
             }
             isWrong();
+            isMatch();
         }
         var foo=document.querySelector(".alphabet");
         foo.appendChild(button);
@@ -129,6 +130,21 @@ function isWrong() { //끝났을 때
             ans[i].value=prop.fruit[i];
         }
 
+        var btn=document.getElementsByClassName('alphabetButton');
+        for(var i=0; i<btn.length; i++) {
+            btn[i].disabled='disabled';
+        }
+    }
+}
+
+function isMatch() { //맞췄을 때
+    var ans=document.getElementsByClassName('fname');
+    var match="";
+    for(var i=0; i<ans.length; i++) {
+        match+=ans[i].value;
+    }
+    if(match===prop.fruit) {
+        alert("Congratulation!!");
         var btn=document.getElementsByClassName('alphabetButton');
         for(var i=0; i<btn.length; i++) {
             btn[i].disabled='disabled';
