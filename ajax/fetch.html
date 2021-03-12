@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <article>
+
+    </article>
+    <input type="button" value="fetch" onclick="
+    /*fetch('html').then(function(response) { //css라는 데이터를 요청하고
+        response.text().then(function(text) {
+            alert(text); //요청이 끝나면 이부분 수행
+            document.querySelector('article').innerHTML=text;
+        })
+    })*/
+    //Asynchronous 
+    function callbackme() {
+        console.log('response end');
+    }
+    fetch('html').then(callbackme); //fetch api의 응답이 끝나면 callbackme함수를 실행시키도록
+    console.log(1);
+    console.log(2); //실행순서 주의 - 출력: 1, 2, response end
+    ">
+</body>
+</html>

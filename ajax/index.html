@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <title>WEB3 - Welcome</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <script src="colors.js"></script>
+</head>
+<body>
+  <h1><a href="index.html">WEB</a></h1>
+  <input id="night_day2" type="button" name="" value="night" onclick="
+    nightDayHandler(this);
+  ">
+  <div id="grid">
+    <ol>
+      <li><a onclick="
+        fetch('html').then(function(response) {
+          response.text().then(function(text) {
+            document.querySelector('article').innerHTML=text;
+          })
+        }); 
+        ">HTML</a></li>
+      <li><a onclick="
+        fetch('css').then(function(response) {
+          response.text().then(function(text) {
+            document.querySelector('article').innerHTML=text;
+          })
+        });
+        ">CSS</a></li>
+      <li><a onclick="
+        fetch('javascript').then(function(response) {
+          response.text().then(function(text) {
+            document.querySelector('article').innerHTML=text;
+          })
+        });
+        ">Javascript</a></li>
+    </ol>
+    <article></article>
+  </div>
+</body>
+</html>
