@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+  <title>WEB3 - Welcome</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <script src="colors.js"></script>
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="853786520828-phaamkesplnbrs7tstg27he587gq3rlq.apps.googleusercontent.com">
+  <script>
+    function init() {
+      console.log('init');
+      gapi.load('auth2', function() { //auth2의 load가 끝나면 실행
+    /* Ready. Make a call to gapi.auth2.init or some other API */
+        
+      });
+    }
+  </script>
+  <script>
+    function onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+      console.log('Name: ' + profile.getName());
+      console.log('Image URL: ' + profile.getImageUrl());
+      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    }
+  </script>
+</head>
+<body>
+  <h1><a href="#!welcome">WEB</a></h1>
+  <div class="g-signin2" data-onsuccess="onSignIn"></div>
+  <input id="night_day2" type="button" name="" value="night" onclick="
+    nightDayHandler(this);
+  ">
+  <div id="grid">
+    <ol id="nav">
+      <li><a href="#!html" onclick="fetchPage('html')">HTML</a></li>
+      <li><a href="#!css" onclick="fetchPage('css')">CSS</a></li>
+      <li><a href="#!javascript" onclick="fetchPage('javascript')">Javascript</a></li>
+    </ol>
+    <article></article>
+  </div>
+  <script>
+    function fetchPage(name) {
+      fetch(name).then(function(response) {
+          response.text().then(function(text) {
+            document.querySelector('article').innerHTML=text;
+          })
+        });
+    }
+
+    if(location.hash) { //hash가 있다면
+      fetchPage(location.hash.substr(2)); //#! 다음부터의 string
+    }
+    else { //초기 페이지 로드
+      fetchPage('welcome');
+    }
+    fetch('list').then(function(response) {
+      response.text().then(function(text) {
+        //<li><a href="#!html" onclick="fetchPage('html')">HTML</a></li>
+        var items=text.split(','); //text에 있는 문자열을 ,를 기준으로 쪼개 배열이 되도록 한다.
+        var tags='';
+        for(var i=0; i<items.length; i++) {
+          var item=items[i];
+          item=item.trim(); //줄바꿈이나 공백 제거
+          var tag='<li><a href="#!' + item + '" onclick="fetchPage(\'' + item + '\')">' + item + '</a></li>';
+          tags=tags+tag;
+        }
+        document.querySelector('#nav').innerHTML=tags;
+      })
+    })
+  </script>
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+</body>
+</html>
