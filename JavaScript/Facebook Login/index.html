@@ -11,8 +11,13 @@
       console.log(response);
       if(response.status==='connected') { //로그인 되어있을 때
           document.querySelector('#authBtn').value='Logout';
+          FB.api('/me', function(resp) {
+            //console.log(resp);
+            document.querySelector('#name').innerHTML=' Welcome,' + resp.name;
+          });
       } else { //로그인이 되어있지 않을 때
         document.querySelector('#authBtn').value='Login';
+        document.querySelector('#name').innerHTML='';
       }
     }
     
@@ -44,7 +49,7 @@
         getLoginStatus(response);
       });
     }
-  ">
+  "><span id="name"></span>
   <h1><a href="index.html">WEB</a></h1>
   <input id="night_day2" type="button" name="" value="night" onclick="
     nightDayHandler(this);
