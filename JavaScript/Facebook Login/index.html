@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <title>WEB2 - Welcome</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <script src="colors.js"></script>
+  <script>
+  var getLoginStatus=function(response) {   // Called after the JS SDK has been initialized.
+      //statusChangeCallback(response);        // Returns the login status.
+      console.log(response);
+      if(response.status==='connected') { //로그인 되어있을 때
+          document.querySelector('#authBtn').value='Logout';
+      } else { //로그인이 되어있지 않을 때
+        document.querySelector('#authBtn').value='Login';
+      }
+    }
+    
+
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '339123807519112',
+      cookie     : true,                     // Enable cookies to allow the server to access the session.
+      xfbml      : true,                     // Parse social plugins on this webpage.
+      version    : 'v10.0'           // Use this Graph API version for this call.
+    });
+    FB.getLoginStatus(getLoginStatus);
+  };
+  </script>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+</head>
+<body>
+  <input type="button" id="authBtn" value="checking..." onclick="
+    if(this.value==='Login') {
+      //now Logout
+      FB.login(function(response) {
+        console.log('login =>', response);
+        getLoginStatus(response);
+      });
+    }else {
+      //now Login
+      FB.logout(function(response) {
+        console.log('logout =>', response);
+        getLoginStatus(response);
+      });
+    }
+  ">
+  <h1><a href="index.html">WEB</a></h1>
+  <input id="night_day2" type="button" name="" value="night" onclick="
+    nightDayHandler(this);
+  ">
+  <div id="grid">
+    <ol>
+      <li><a href="1.html">HTML</a></li>
+      <li><a href="2.html">CSS</a></li>
+      <li><a href="3.html">JavaScript</a></li>
+    </ol>
+    <div id="article">
+      <h2>WEB</h2>
+      <p>The World Wide Web (abbreviated WWW or the Web) is an information space where documents and other web resources are identified by Uniform Resource Locators (URLs), interlinked by hypertext links, and can be accessed via the Internet.[1] English scientist Tim Berners-Lee invented the World Wide Web in 1989. He wrote the first web browser computer program in 1990 while employed at CERN in Switzerland.[2][3] The Web browser was released outside of CERN in 1991, first to other research institutions starting in January 1991 and to the general public on the Internet in August 1991.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
