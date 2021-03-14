@@ -7,29 +7,26 @@
   <script src="colors.js"></script>
   <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <meta name="google-signin-client_id" content="853786520828-phaamkesplnbrs7tstg27he587gq3rlq.apps.googleusercontent.com">
   <script>
     function init() {
       console.log('init');
       gapi.load('auth2', function() { //auth2의 load가 끝나면 실행
     /* Ready. Make a call to gapi.auth2.init or some other API */
-        
+        console.log('auth2');
+        var gauth = gapi.auth2.init( {
+          client_id:'853786520828-phaamkesplnbrs7tstg27he587gq3rlq.apps.googleusercontent.com'
+        })
+        gauth.then(function() {  //gauth가 끝나고 실행
+          console.log('googleAuth success');
+        }, function() {
+          console.log('googleAuth fail');
+        })
       });
-    }
-  </script>
-  <script>
-    function onSignIn(googleUser) {
-      var profile = googleUser.getBasicProfile();
-      console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-      console.log('Name: ' + profile.getName());
-      console.log('Image URL: ' + profile.getImageUrl());
-      console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
     }
   </script>
 </head>
 <body>
   <h1><a href="#!welcome">WEB</a></h1>
-  <div class="g-signin2" data-onsuccess="onSignIn"></div>
   <input id="night_day2" type="button" name="" value="night" onclick="
     nightDayHandler(this);
   ">
