@@ -1,6 +1,7 @@
 let http = require('http');
 let fs = require('fs');
 let u=require('url'); //모듈 url
+//모듈: 기본적으로 제공하는 기능들을 그룹핑 해놓은 각각의 그룹들
 
 let app = http.createServer(function(request,response){
     let url = request.url;
