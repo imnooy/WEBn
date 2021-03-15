@@ -1,73 +1,64 @@
 <!doctype html>
 <html>
 <head>
-  <title>WEB3 - Welcome</title>
+  <title>WEB1 - Welcome</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="colors.js"></script>
-  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script>
-    function init() {
+    function checkLoginStatus(){
+      var loginBtn = document.querySelector('#loginBtn');
+      if(gauth.isSignedIn.get()){
+        console.log('logined');
+        loginBtn.value = 'Logout';
+      } else {
+        console.log('logouted');
+        loginBtn.value = 'Login';
+      }
+    }
+    function init(){
       console.log('init');
-      gapi.load('auth2', function() { //auth2의 load가 끝나면 실행
-    /* Ready. Make a call to gapi.auth2.init or some other API */
+      gapi.load('auth2', function() {
         console.log('auth2');
-        var gauth = gapi.auth2.init( {
+        window.gauth = gapi.auth2.init({
           client_id:'853786520828-phaamkesplnbrs7tstg27he587gq3rlq.apps.googleusercontent.com'
         })
-        gauth.then(function() {  //gauth가 끝나고 실행
+        gauth.then(function(){
           console.log('googleAuth success');
-        }, function() {
+          checkLoginStatus();
+        }, function(){
           console.log('googleAuth fail');
-        })
+        });
       });
     }
   </script>
 </head>
 <body>
-  <h1><a href="#!welcome">WEB</a></h1>
-  <input id="night_day2" type="button" name="" value="night" onclick="
+  <input type="button" id="loginBtn" value="checking..." onclick="
+    if(this.value === 'Login'){
+      gauth.signIn().then(function(){
+        console.log('gauth.signIn()');
+        checkLoginStatus();
+      });
+    } else {
+      gauth.signOut().then(function(){
+        console.log('gauth.signOut()');
+        checkLoginStatus();
+      });
+    }
+  ">
+  <h1><a href="index.html">WEB</a></h1>
+  <input id="night_day" type="button" value="night" onclick="
     nightDayHandler(this);
   ">
-  <div id="grid">
-    <ol id="nav">
-      <li><a href="#!html" onclick="fetchPage('html')">HTML</a></li>
-      <li><a href="#!css" onclick="fetchPage('css')">CSS</a></li>
-      <li><a href="#!javascript" onclick="fetchPage('javascript')">Javascript</a></li>
-    </ol>
-    <article></article>
-  </div>
-  <script>
-    function fetchPage(name) {
-      fetch(name).then(function(response) {
-          response.text().then(function(text) {
-            document.querySelector('article').innerHTML=text;
-          })
-        });
-    }
-
-    if(location.hash) { //hash가 있다면
-      fetchPage(location.hash.substr(2)); //#! 다음부터의 string
-    }
-    else { //초기 페이지 로드
-      fetchPage('welcome');
-    }
-    fetch('list').then(function(response) {
-      response.text().then(function(text) {
-        //<li><a href="#!html" onclick="fetchPage('html')">HTML</a></li>
-        var items=text.split(','); //text에 있는 문자열을 ,를 기준으로 쪼개 배열이 되도록 한다.
-        var tags='';
-        for(var i=0; i<items.length; i++) {
-          var item=items[i];
-          item=item.trim(); //줄바꿈이나 공백 제거
-          var tag='<li><a href="#!' + item + '" onclick="fetchPage(\'' + item + '\')">' + item + '</a></li>';
-          tags=tags+tag;
-        }
-        document.querySelector('#nav').innerHTML=tags;
-      })
-    })
-  </script>
+  <ol>
+    <li><a href="1.html">HTML</a></li>
+    <li><a href="2.html">CSS</a></li>
+    <li><a href="3.html">JavaScript</a></li>
+  </ol>
+  <h2>WEB</h2>
+  <p>The World Wide Web (abbreviated WWW or the Web) is an information space where documents and other web resources are identified by Uniform Resource Locators (URLs), interlinked by hypertext links, and can be accessed via the Internet.[1] English scientist Tim Berners-Lee invented the World Wide Web in 1989. He wrote the first web browser computer program in 1990 while employed at CERN in Switzerland.[2][3] The Web browser was released outside of CERN in 1991, first to other research institutions starting in January 1991 and to the general public on the Internet in August 1991.
+  </p>
   <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
 </body>
 </html>
