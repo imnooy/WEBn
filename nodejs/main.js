@@ -14,6 +14,7 @@ function templateHTML(title, list, body) {
     <body>
     <h1><a href="/">WEB</a></h1>
     ${list}
+    <a href="/create">create</a>
     ${body}
     </body>
     </html>
@@ -37,6 +38,7 @@ let app = http.createServer(function(request,response){
     let url = request.url;
     let queryData=u.parse(url, true).query;
     let pathname=u.parse(url, true).pathname;
+    console.log(pathname);
     let title=queryData.id;
     //console.log(queryData.id); //HTML 출력
 
@@ -73,6 +75,24 @@ let app = http.createServer(function(request,response){
                 });
             })
         }
+    }
+    else if(pathname==='/create') {
+        fs.readdir('./data', function(error, filelist) {
+            let t='WEB - create';
+            let list=templateList(filelist);         
+            let template=templateHTML(title, list, `
+            <form action="http://localhost:3000/process_create" method="POST">
+            <p></p><input type="text" name="title" placeholder="title"></p>
+            <p>
+                <textarea name="description" id="" cols="30" rows="10" placeholder="description"></textarea>
+            </p>
+            <p>
+                <input type="submit">
+            </p>
+            </form>`);
+            response.writeHead(200);
+            response.end(template);
+            })    
     }
     else {
         response.writeHead(404);
