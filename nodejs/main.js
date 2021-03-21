@@ -69,7 +69,11 @@ let app = http.createServer(function(request,response){
             fs.readdir('./data', function(error, filelist) {
                 fs.readFile(`data/${title}`, 'utf8', function(err, description) {
                     let list=templateList(filelist);
-                    let template=templateHTML(title, list, `<h2>${title}</h2>${description}`, `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`);
+                    let template=templateHTML(title, list, `<h2>${title}</h2>${description}`, `<a href="/create">create</a> <a href="/update?id=${title}">update</a> 
+                    <form class="delete_form" action="delete_process" method="post" onsubmit="">
+                    <input type="hidden" name="id" value="${title}">
+                    <input type="submit" value="delete">
+                    </form>`);
                     response.writeHead(200);
                     response.end(template);
                 });
@@ -145,11 +149,24 @@ let app = http.createServer(function(request,response){
             //console.log(post);
 
             fs.rename(`data/${id}`, `data/${ti}`, function(err) {
-                //비동기화된 메서드이기 때문에 rename이 끝나면 writeFile을 실행되게. writeFile을 콜백함수 바깥에서 호출하고 싶으면 동기식인 renameSync를 이용해 rename을 확실히 끝내고 writeFile을 실행하게 할 수 있다.
                 fs.writeFile(`data/${ti}`, de, 'utf8', function(err) {
                     response.writeHead(302, {Location: `/?id=${ti}`});
                     response.end('success');
                 })
+            })
+        });
+    }
+    else if(pathname==='/delete_process') {
+        let body='';
+        request.on('data', function(data) {
+            body=body+data;
+        });
+        request.on('end', function() {
+            let post=qs.parse(body);
+            let id=post.id;
+            fs.unlink(`data/${id}`, function(err) {
+                response.writeHead(302, {Location: `/`}); //go home
+                response.end();
             })
         });
     }
