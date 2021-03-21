@@ -39,7 +39,6 @@ let app = http.createServer(function(request,response){
     let url = request.url;
     let queryData=u.parse(url, true).query;
     let pathname=u.parse(url, true).pathname;
-    console.log(pathname);
     let title=queryData.id;
     //console.log(queryData.id); //HTML 출력
 
@@ -100,21 +99,17 @@ let app = http.createServer(function(request,response){
         let body='';
         request.on('data', function(data) {
             body=body+data;
-            //callback이 실행될 때마다 data를 추가
         });
-        //특정한 양의 data를 서버에서 수신할 때마다 callback func를 호출하도록 약속 되어있음.
         request.on('end', function() {
-            //더 이상 들어올 data가 없을 때 이 func 수행
             let post=qs.parse(body);
-            //console.log(post);
-            console.log(post.title);
-            //object!
-
             let ti=post.title;
             let de=post.description;
+
+            fs.writeFile(`data/${ti}`, de, 'utf8', function(err) {
+                response.writeHead(302, {Location: `/?id=${ti}`}); //302: page를 redirection 시켜라
+                response.end('success');
+            })
         });
-        response.writeHead(200);
-        response.end('success');
     }
     else {
         response.writeHead(404);
