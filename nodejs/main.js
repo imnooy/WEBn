@@ -4,7 +4,7 @@ let u=require('url'); //모듈 url
 let qs=require('querystring');
 //모듈: 기본적으로 제공하는 기능들을 그룹핑 해놓은 각각의 그룹들
 
-function templateHTML(title, list, body) {
+function templateHTML(title, list, body, control) {
     return `
     <!doctype html>
     <html>
@@ -15,7 +15,7 @@ function templateHTML(title, list, body) {
     <body>
     <h1><a href="/">WEB</a></h1>
     ${list}
-    <a href="/create">create</a>
+    ${control}
     ${body}
     </body>
     </html>
@@ -59,7 +59,7 @@ let app = http.createServer(function(request,response){
                 */
 
                 let list=templateList(filelist);         
-                let template=templateHTML(title, list, `<h2>${t}</h2>${d}`);
+                let template=templateHTML(title, list, `<h2>${t}</h2>${d}`, `<a href="/create">create</a>`);
                 response.writeHead(200);
                 response.end(template);
                 })            
@@ -69,7 +69,7 @@ let app = http.createServer(function(request,response){
             fs.readdir('./data', function(error, filelist) {
                 fs.readFile(`data/${title}`, 'utf8', function(err, description) {
                     let list=templateList(filelist);
-                    let template=templateHTML(title, list, `<h2>${title}</h2>${description}`);
+                    let template=templateHTML(title, list, `<h2>${title}</h2>${description}`, `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`);
                     response.writeHead(200);
                     response.end(template);
                 });
@@ -81,7 +81,7 @@ let app = http.createServer(function(request,response){
             let t='WEB - create';
             let list=templateList(filelist);         
             let template=templateHTML(title, list, `
-            <form action="http://localhost:3000/create_process" method="POST">
+            <form action="/create_process" method="POST">
             <p></p><input type="text" name="title" placeholder="title"></p>
             <p>
                 <textarea name="description" id="" cols="30" rows="10" placeholder="description"></textarea>
@@ -89,7 +89,7 @@ let app = http.createServer(function(request,response){
             <p>
                 <input type="submit">
             </p>
-            </form>`);
+            </form>`, '');
             response.writeHead(200);
             response.end(template);
             })  
@@ -108,6 +108,48 @@ let app = http.createServer(function(request,response){
             fs.writeFile(`data/${ti}`, de, 'utf8', function(err) {
                 response.writeHead(302, {Location: `/?id=${ti}`}); //302: page를 redirection 시켜라
                 response.end('success');
+            })
+        });
+    }
+    else if(pathname === '/update') {
+        fs.readdir('./data', function(error, filelist) {
+            fs.readFile(`data/${title}`, 'utf8', function(err, description) {
+                let tit=queryData.id;
+                let list=templateList(filelist);
+                let template=templateHTML(title, list, 
+                `<form action="/update_process" method="POST">
+                <input type="hidden" name="id" value="${title}">
+                <p></p><input type="text" name="title" placeholder="title" value=${title}></p>
+                <p>
+                    <textarea name="description" id="" cols="30" rows="10" placeholder="description">${description}</textarea>
+                </p>
+                <p>
+                    <input type="submit">
+                </p>
+                </form>`, `<a href="/create">create</a> <a href="/update?id=${title}">update</a>`);
+                response.writeHead(200);
+                response.end(template);
+            });
+        })
+    }
+    else if(pathname==='/update_process') {
+        let body='';
+        request.on('data', function(data) {
+            body=body+data;
+        });
+        request.on('end', function() {
+            let post=qs.parse(body);
+            let id=post.id;
+            let ti=post.title;
+            let de=post.description;
+            //console.log(post);
+
+            fs.rename(`data/${id}`, `data/${ti}`, function(err) {
+                //비동기화된 메서드이기 때문에 rename이 끝나면 writeFile을 실행되게. writeFile을 콜백함수 바깥에서 호출하고 싶으면 동기식인 renameSync를 이용해 rename을 확실히 끝내고 writeFile을 실행하게 할 수 있다.
+                fs.writeFile(`data/${ti}`, de, 'utf8', function(err) {
+                    response.writeHead(302, {Location: `/?id=${ti}`});
+                    response.end('success');
+                })
             })
         });
     }
