@@ -126,9 +126,7 @@ function isWrong() { //끝났을 때
     if(count>=6) {
         alert('GAME OVER!!! Answer is '+prop.fruit);
         var ans=document.getElementsByClassName('fname');
-        for(var i=0; i<ans.length; i++) { //정답 공개
-            ans[i].value=prop.fruit[i];
-        }
+
 
         var btn=document.getElementsByClassName('alphabetButton');
         for(var i=0; i<btn.length; i++) {
