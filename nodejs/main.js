@@ -4,38 +4,7 @@ let u=require('url'); //모듈 url
 let qs=require('querystring');
 //모듈: 기본적으로 제공하는 기능들을 그룹핑 해놓은 각각의 그룹들
 
-let template = {
-    html:function(title, list, body, control) {
-        return `
-        <!doctype html>
-        <html>
-        <head>
-        <title>WEB1 - ${title}</title>
-        <meta charset="utf-8">
-        </head>
-        <body>
-        <h1><a href="/">WEB</a></h1>
-        ${list}
-        ${control}
-        ${body}
-        </body>
-        </html>
-        `;
-    },
-    
-    list:function(filelist) {
-        let list='<ul>';
-    
-        let i=0;
-        while(i<filelist.length) {
-            list=list+`<li><a href="/?id=${filelist[i]}">${filelist[i]}</a></li>`;
-            i=i+1;
-        }
-    
-        list=list+'</ul>';
-        return list;
-    }
-}
+let template=require('./lib/template.js');
 
 let app = http.createServer(function(request,response){
     let url = request.url;
