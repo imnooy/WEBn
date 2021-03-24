@@ -4,6 +4,8 @@ let u=require('url'); //모듈 url
 let qs=require('querystring');
 //모듈: 기본적으로 제공하는 기능들을 그룹핑 해놓은 각각의 그룹들
 
+let path=require('path');
+
 let template=require('./lib/template.js');
 
 let app = http.createServer(function(request,response){
@@ -38,7 +40,8 @@ let app = http.createServer(function(request,response){
             //queryString에 따라 읽는 파일의 경로가 달라진다!
             //id값이 있을 경우
             fs.readdir('./data', function(error, filelist) {
-                fs.readFile(`data/${title}`, 'utf8', function(err, description) {
+                let filteredId=path.parse(queryData.id).base;
+                fs.readFile(`data/${filteredId}`, 'utf8', function(err, description) {
                     let list=template.list(filelist);
                     let html=template.html(title, list, `<h2>${title}</h2>${description}`, `<a href="/create">create</a> <a href="/update?id=${title}">update</a> 
                     <form class="delete_form" action="delete_process" method="post" onsubmit="">
@@ -78,9 +81,11 @@ let app = http.createServer(function(request,response){
         request.on('end', function() {
             let post=qs.parse(body);
             let ti=post.title;
+            let filteredId=path.parse(ti).base;
             let de=post.description;
+            console.log(filteredId);
 
-            fs.writeFile(`data/${ti}`, de, 'utf8', function(err) {
+            fs.writeFile(`data/${filteredId}`, de, 'utf8', function(err) {
                 response.writeHead(302, {Location: `/?id=${ti}`}); //302: page를 redirection 시켜라
                 response.end('success');
             })
@@ -88,7 +93,8 @@ let app = http.createServer(function(request,response){
     }
     else if(pathname === '/update') {
         fs.readdir('./data', function(error, filelist) {
-            fs.readFile(`data/${title}`, 'utf8', function(err, description) {
+            let filteredId=path.parse(queryData.id).base;
+            fs.readFile(`data/${filteredId}`, 'utf8', function(err, description) {
                 let tit=queryData.id;
                 let list=template.list(filelist);
                 let html=template.html(title, list, 
@@ -117,11 +123,13 @@ let app = http.createServer(function(request,response){
             let id=post.id;
             let ti=post.title;
             let de=post.description;
-            //console.log(post);
+            
+            let filteredId=path.parse(id).base;
+            let filteredTi=path.parse(ti).base;
 
-            fs.rename(`data/${id}`, `data/${ti}`, function(err) {
-                fs.writeFile(`data/${ti}`, de, 'utf8', function(err) {
-                    response.writeHead(302, {Location: `/?id=${ti}`});
+            fs.rename(`data/${filteredId}`, `data/${filteredTi}`, function(err) {
+                fs.writeFile(`data/${filteredTi}`, de, 'utf8', function(err) {
+                    response.writeHead(302, {Location: `/?id=${filteredTi}`});
                     response.end('success');
                 })
             })
@@ -135,7 +143,8 @@ let app = http.createServer(function(request,response){
         request.on('end', function() {
             let post=qs.parse(body);
             let id=post.id;
-            fs.unlink(`data/${id}`, function(err) {
+            let filteredId=path.parse(id).base;
+            fs.unlink(`data/${filteredId}`, function(err) {
                 response.writeHead(302, {Location: `/`}); //go home
                 response.end();
             })
