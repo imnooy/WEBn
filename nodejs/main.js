@@ -1,18 +1,18 @@
-let http = require('http');
-let fs = require('fs');
-let u=require('url'); //모듈 url
-let qs=require('querystring');
+const http = require('http');
+const fs = require('fs');
+const u=require('url'); //모듈 url
+const qs=require('querystring');
 //모듈: 기본적으로 제공하는 기능들을 그룹핑 해놓은 각각의 그룹들
 
-let path=require('path');
-let template=require('./lib/template.js');
-let sanitizeHtml=require('sanitize-html');
+const path=require('path');
+const template=require('./lib/template.js');
+const sanitizeHtml=require('sanitize-html');
 
 let app = http.createServer(function(request,response){
-    let url = request.url;
-    let queryData=u.parse(url, true).query;
-    let pathname=u.parse(url, true).pathname;
-    let title=queryData.id;
+    const url = request.url;
+    const queryData=u.parse(url, true).query;
+    const pathname=u.parse(url, true).pathname;
+    const title=queryData.id;
     //console.log(queryData.id); //HTML 출력
 
     //console.log(u.parse(url, true).pathname);
@@ -20,8 +20,8 @@ let app = http.createServer(function(request,response){
     if(pathname==='/') { 
         if(title===undefined) { //페이지 홈
             fs.readdir('./data', function(error, filelist) {
-                let t='Welcome';
-                let d='Hello, Node.js';
+                const t='Welcome';
+                const d='Hello, Node.js';
 
                 /*
                 var list=`<ul>
@@ -31,8 +31,8 @@ let app = http.createServer(function(request,response){
                 </ul>`
                 */
 
-                let list=template.list(filelist);         
-                let html=template.html(title, list, `<h2>${t}</h2>${d}`, `<a href="/create">create</a>`);
+                const list=template.list(filelist);         
+                const html=template.html(title, list, `<h2>${t}</h2>${d}`, `<a href="/create">create</a>`);
                 response.writeHead(200);
                 response.end(html);
                 })            
@@ -40,14 +40,14 @@ let app = http.createServer(function(request,response){
             //queryString에 따라 읽는 파일의 경로가 달라진다!
             //id값이 있을 경우
             fs.readdir('./data', function(error, filelist) {
-                let filteredId=path.parse(queryData.id).base;
+                const filteredId=path.parse(queryData.id).base;
                 fs.readFile(`data/${filteredId}`, 'utf8', function(err, description) {
-                    let sanitizedTitle=sanitizeHtml(title);
+                    const sanitizedTitle=sanitizeHtml(title);
                     //let sanitizedDescription=sanitizeHtml(description);
-                    let sanitizedDescription=sanitizeHtml(description, { allowedTags:['h1']});
-                    
-                    let list=template.list(filelist);
-                    let html=template.html(title, list, `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`, `<a href="/create">create</a> <a href="/update?id=${sanitizedTitle}">update</a> 
+                    const sanitizedDescription=sanitizeHtml(description, { allowedTags:['h1']});
+
+                    const list=template.list(filelist);
+                    const html=template.html(title, list, `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`, `<a href="/create">create</a> <a href="/update?id=${sanitizedTitle}">update</a> 
                     <form class="delete_form" action="delete_process" method="post" onsubmit="">
                     <input type="hidden" name="id" value="${sanitizedTitle}">
                     <input type="submit" value="delete">
@@ -60,9 +60,9 @@ let app = http.createServer(function(request,response){
     }
     else if(pathname==='/create') {
         fs.readdir('./data', function(error, filelist) {
-            let t='WEB - create';
-            let list=template.list(filelist);         
-            let html=template.html(title, list, `
+            const t='WEB - create';
+            const list=template.list(filelist);         
+            const html=template.html(title, list, `
             <form action="/create_process" method="POST">
             <p></p><input type="text" name="title" placeholder="title"></p>
             <p>
@@ -83,10 +83,10 @@ let app = http.createServer(function(request,response){
             body=body+data;
         });
         request.on('end', function() {
-            let post=qs.parse(body);
-            let ti=post.title;
-            let filteredId=path.parse(ti).base;
-            let de=post.description;
+            const post=qs.parse(body);
+            const ti=post.title;
+            const filteredId=path.parse(ti).base;
+            const de=post.description;
             console.log(filteredId);
 
             fs.writeFile(`data/${filteredId}`, de, 'utf8', function(err) {
@@ -97,11 +97,11 @@ let app = http.createServer(function(request,response){
     }
     else if(pathname === '/update') {
         fs.readdir('./data', function(error, filelist) {
-            let filteredId=path.parse(queryData.id).base;
+            const filteredId=path.parse(queryData.id).base;
             fs.readFile(`data/${filteredId}`, 'utf8', function(err, description) {
-                let tit=queryData.id;
-                let list=template.list(filelist);
-                let html=template.html(title, list, 
+                const tit=queryData.id;
+                const list=template.list(filelist);
+                const html=template.html(title, list, 
                 `<form action="/update_process" method="POST">
                 <input type="hidden" name="id" value="${title}">
                 <p></p><input type="text" name="title" placeholder="title" value=${title}></p>
@@ -123,13 +123,13 @@ let app = http.createServer(function(request,response){
             body=body+data;
         });
         request.on('end', function() {
-            let post=qs.parse(body);
-            let id=post.id;
-            let ti=post.title;
-            let de=post.description;
+            const post=qs.parse(body);
+            const id=post.id;
+            const ti=post.title;
+            const de=post.description;
             
-            let filteredId=path.parse(id).base;
-            let filteredTi=path.parse(ti).base;
+            const filteredId=path.parse(id).base;
+            const filteredTi=path.parse(ti).base;
 
             fs.rename(`data/${filteredId}`, `data/${filteredTi}`, function(err) {
                 fs.writeFile(`data/${filteredTi}`, de, 'utf8', function(err) {
@@ -145,9 +145,9 @@ let app = http.createServer(function(request,response){
             body=body+data;
         });
         request.on('end', function() {
-            let post=qs.parse(body);
-            let id=post.id;
-            let filteredId=path.parse(id).base;
+            const post=qs.parse(body);
+            const id=post.id;
+            const filteredId=path.parse(id).base;
             fs.unlink(`data/${filteredId}`, function(err) {
                 response.writeHead(302, {Location: `/`}); //go home
                 response.end();
