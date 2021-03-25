@@ -5,8 +5,8 @@ let qs=require('querystring');
 //모듈: 기본적으로 제공하는 기능들을 그룹핑 해놓은 각각의 그룹들
 
 let path=require('path');
-
 let template=require('./lib/template.js');
+let sanitizeHtml=require('sanitize-html');
 
 let app = http.createServer(function(request,response){
     let url = request.url;
@@ -42,10 +42,14 @@ let app = http.createServer(function(request,response){
             fs.readdir('./data', function(error, filelist) {
                 let filteredId=path.parse(queryData.id).base;
                 fs.readFile(`data/${filteredId}`, 'utf8', function(err, description) {
+                    let sanitizedTitle=sanitizeHtml(title);
+                    //let sanitizedDescription=sanitizeHtml(description);
+                    let sanitizedDescription=sanitizeHtml(description, { allowedTags:['h1']});
+                    
                     let list=template.list(filelist);
-                    let html=template.html(title, list, `<h2>${title}</h2>${description}`, `<a href="/create">create</a> <a href="/update?id=${title}">update</a> 
+                    let html=template.html(title, list, `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`, `<a href="/create">create</a> <a href="/update?id=${sanitizedTitle}">update</a> 
                     <form class="delete_form" action="delete_process" method="post" onsubmit="">
-                    <input type="hidden" name="id" value="${title}">
+                    <input type="hidden" name="id" value="${sanitizedTitle}">
                     <input type="submit" value="delete">
                     </form>`);
                     response.writeHead(200);

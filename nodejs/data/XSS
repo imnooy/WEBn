@@ -1,0 +1,12 @@
+&lt;script&gt;
+location.href='https://opentutorials.org/course/1';
+&lt;/script&gt; //수동으로 처리
+
+
+//자동으로
+//npm init
+//enter!!!
+//->package.json is created.
+
+//npm install -S sanitize-html
+//('sanitize-html' (external software) install)
