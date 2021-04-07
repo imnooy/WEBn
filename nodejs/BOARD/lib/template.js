@@ -9,7 +9,7 @@ module.exports={
         <meta charset="utf-8">
         </head>
         <body>
-        <h1 class="title"><a href="/">BOARD</a></h1>
+        <h1 class="title" align="center"><a href="/">BOARD</a></h1>
         </body>
         </html>`;
     }
